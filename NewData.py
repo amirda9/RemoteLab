@@ -36,7 +36,7 @@ y_test = torch.tensor(y_test).float().to(device)
 train_data = TensorDataset(x_train, y_train)
 test_data = TensorDataset(x_test, y_test)
 
-train_batch = DataLoader(train_data, batch_size=512, shuffle=True)
+train_batch = DataLoader(train_data, batch_size=1024, shuffle=True)
 test_batch = DataLoader(test_data, batch_size=128, shuffle=True)
 
 # Model, weights initialization, optimizer, and scheduler
@@ -49,15 +49,15 @@ def init_weights(m):
 
 model.apply(init_weights)
 
-optimizer = optim.Adam(model.parameters(), lr=0.001)
-lr_scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=1000, gamma=0.9)
+optimizer = optim.Adam(model.parameters(), lr=0.01)
+lr_scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=500, gamma=0.5)
 
 # Training loop
 loss_train = []
 loss_eval = []
 loss_eval2 = []
 
-for i in range(20000):
+for i in range(10000):
     model.train()
     for x, y in train_batch:
         x, y = x.to(device), y.to(device)
@@ -66,6 +66,7 @@ for i in range(20000):
         loss = F.mse_loss(output, x)
         loss.backward()
         optimizer.step()
+    lr_scheduler.step()
     print('epoch: ', i, 'loss: ', loss.item())
     
     if i % 5 == 0:
@@ -84,7 +85,6 @@ for i in range(20000):
         print('test_loss ', loss.item(), 'eval_loss ', np.mean(arr), 'mae', np.mean(arr2))
         torch.save(model.state_dict(), './models/ResnetLastF.pth')
     if i % 2000 == 0:
-        lr_scheduler.step()
         plt.plot(loss_train, label='train')
         plt.plot(loss_eval, label='eval')
         plt.legend()
