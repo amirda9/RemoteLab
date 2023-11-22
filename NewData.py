@@ -50,7 +50,7 @@ def init_weights(m):
 model.apply(init_weights)
 
 optimizer = optim.Adam(model.parameters(), lr=0.01)
-lr_scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=1000, gamma=0.9)
+lr_scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=1000, gamma=0.6)
 
 # Training loop
 loss_train = []
@@ -84,7 +84,7 @@ for i in range(20000):
             loss_eval.append(np.mean(arr))
         print('test_loss ', loss.item(), 'eval_loss ', np.mean(arr), 'mae', np.mean(arr2))
         torch.save(model.state_dict(), './models/ResnetLastF.pth')
-    if i % 2000 == 0:
+    if i % 5000 == 0:
         plt.plot(loss_train, label='train')
         plt.plot(loss_eval, label='eval')
         plt.legend()
