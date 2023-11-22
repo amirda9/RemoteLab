@@ -40,7 +40,7 @@ train_batch = DataLoader(train_data, batch_size=1024, shuffle=True)
 test_batch = DataLoader(test_data, batch_size=128, shuffle=True)
 
 # Model, weights initialization, optimizer, and scheduler
-model = Model2(344,512,236).to(device)
+model = SimpleNEt2().to(device)
 
 def init_weights(m):
     if type(m) == nn.Linear:
@@ -62,8 +62,8 @@ for i in range(20000):
     for x, y in train_batch:
         x, y = x.to(device), y.to(device)
         optimizer.zero_grad()
-        output = model(y)
-        loss = F.mse_loss(output, x)
+        output = model(x)
+        loss = F.mse_loss(output, y)
         loss.backward()
         optimizer.step()
     lr_scheduler.step()
@@ -77,14 +77,14 @@ for i in range(20000):
             arr2 = []
             for x, y in test_batch:
                 x, y = x.to(device), y.to(device)
-                output = model(y)
-                loss = F.mse_loss(output, x)
+                output = model(x)
+                loss = F.mse_loss(output, y)
                 arr.append(loss.item())  
-                arr2.append(F.l1_loss(output, x).item())
+                arr2.append(F.l1_loss(output, y).item())
             loss_eval.append(np.mean(arr))
         print('test_loss ', loss.item(), 'eval_loss ', np.mean(arr), 'mae', np.mean(arr2))
         torch.save(model.state_dict(), './models/ResnetLastF.pth')
-    if i % 5000 == 0:
+    if i % 2000 == 0:
         plt.plot(loss_train, label='train')
         plt.plot(loss_eval, label='eval')
         plt.legend()
