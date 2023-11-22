@@ -40,7 +40,7 @@ train_batch = DataLoader(train_data, batch_size=1024, shuffle=True)
 test_batch = DataLoader(test_data, batch_size=128, shuffle=True)
 
 # Model, weights initialization, optimizer, and scheduler
-model = SimpleNEt2().to(device)
+model = Model2(236,512,344).to(device)
 
 def init_weights(m):
     if type(m) == nn.Linear:
@@ -57,7 +57,7 @@ loss_train = []
 loss_eval = []
 loss_eval2 = []
 
-for i in range(20000):
+for i in range(19000):
     model.train()
     for x, y in train_batch:
         x, y = x.to(device), y.to(device)
