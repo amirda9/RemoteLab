@@ -19,8 +19,6 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 df_x = pd.read_csv('./datasets/X.csv')
 df_y = pd.read_csv('./datasets/Y.csv')
 
-# save a minimal version of the data on disk for later use
-
 
 SS = StandardScaler()
 df_x = SS.fit_transform(df_x)
@@ -82,9 +80,7 @@ for i in range(20000):
             loss_eval.append(np.mean(arr))
         print('test_loss ', loss.item(), 'eval_loss ', np.mean(arr))
         torch.save(model.state_dict(), './models/ResnetLastF.pth')
-
-    if loss.item() < 0.001:
-        break
+    
 
 # Plotting and evaluation
 plt.plot(loss_train, label='train')
