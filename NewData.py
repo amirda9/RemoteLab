@@ -84,8 +84,3 @@ for i in range(20000):
             loss_eval.append(np.mean(arr))
         print('test_loss ', loss.item(), 'eval_loss ', np.mean(arr), 'mae', np.mean(arr2))
         torch.save(model.state_dict(), './models/ResnetLastF.pth')
-    if i % 2000 == 0:
-        plt.plot(loss_train, label='train')
-        plt.plot(loss_eval, label='eval')
-        plt.legend()
-        plt.show()
