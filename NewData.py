@@ -79,7 +79,7 @@ for i in range(20000):
                 output = model(x)
                 loss = F.mse_loss(output, y) 
                 arr.append(loss.item())  
-                arr2.append(F.L1Loss(output, y).item())
+                arr2.append(F.l1_loss(output, y).item())
             loss_eval.append(np.mean(arr))
         print('test_loss ', loss.item(), 'eval_loss ', np.mean(arr), 'mae', np.mean(arr2))
         torch.save(model.state_dict(), './models/ResnetLastF.pth')
