@@ -50,14 +50,14 @@ def init_weights(m):
 model.apply(init_weights)
 
 optimizer = optim.Adam(model.parameters(), lr=0.01)
-lr_scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=500, gamma=0.5)
+lr_scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=1000, gamma=0.9)
 
 # Training loop
 loss_train = []
 loss_eval = []
 loss_eval2 = []
 
-for i in range(10000):
+for i in range(20000):
     model.train()
     for x, y in train_batch:
         x, y = x.to(device), y.to(device)
