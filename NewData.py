@@ -10,7 +10,7 @@ from sklearn.metrics import mean_squared_error
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from ArchSimple import SimpleNEt, SimpleNEt2,Model
+from ArchSimple import SimpleNEt, SimpleNEt2,Model,Model2
 
 # Check if GPU is available
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -40,7 +40,7 @@ train_batch = DataLoader(train_data, batch_size=512, shuffle=True)
 test_batch = DataLoader(test_data, batch_size=128, shuffle=True)
 
 # Model, weights initialization, optimizer, and scheduler
-model = Model(344,512,236).to(device)
+model = Model2(344,1024,236).to(device)
 
 def init_weights(m):
     if type(m) == nn.Linear:
