@@ -40,7 +40,7 @@ train_batch = DataLoader(train_data, batch_size=512, shuffle=True)
 test_batch = DataLoader(test_data, batch_size=128, shuffle=True)
 
 # Model, weights initialization, optimizer, and scheduler
-model = SimpleNEt2().to(device)
+model = SimpleNEt().to(device)
 
 def init_weights(m):
     if type(m) == nn.Linear:
