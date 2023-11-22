@@ -40,7 +40,7 @@ train_batch = DataLoader(train_data, batch_size=1024, shuffle=True)
 test_batch = DataLoader(test_data, batch_size=128, shuffle=True)
 
 # Model, weights initialization, optimizer, and scheduler
-model = Model2(236,512,344).to(device)
+model = Model2(344,512,236).to(device)
 
 def init_weights(m):
     if type(m) == nn.Linear:
@@ -62,8 +62,8 @@ for i in range(20000):
     for x, y in train_batch:
         x, y = x.to(device), y.to(device)
         optimizer.zero_grad()
-        output = model(x)
-        loss = F.mse_loss(output, y)
+        output = model(y)
+        loss = F.mse_loss(output, x)
         loss.backward()
         optimizer.step()
     lr_scheduler.step()
@@ -77,10 +77,10 @@ for i in range(20000):
             arr2 = []
             for x, y in test_batch:
                 x, y = x.to(device), y.to(device)
-                output = model(x)
-                loss = F.mse_loss(output, y)
+                output = model(y)
+                loss = F.mse_loss(output, x)
                 arr.append(loss.item())  
-                arr2.append(F.l1_loss(output, y).item())
+                arr2.append(F.l1_loss(output, x).item())
             loss_eval.append(np.mean(arr))
         print('test_loss ', loss.item(), 'eval_loss ', np.mean(arr), 'mae', np.mean(arr2))
         torch.save(model.state_dict(), './models/ResnetLastF.pth')
