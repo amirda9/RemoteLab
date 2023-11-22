@@ -10,7 +10,7 @@ from sklearn.metrics import mean_squared_error
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from ArchSimple import SimpleNEt  # Assuming this is a custom model you've defined
+from ArchSimple import SimpleNEt, SimpleNEt2
 
 # Check if GPU is available
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -40,7 +40,7 @@ train_batch = DataLoader(train_data, batch_size=512, shuffle=True)
 test_batch = DataLoader(test_data, batch_size=128, shuffle=True)
 
 # Model, weights initialization, optimizer, and scheduler
-model = SimpleNEt().to(device)
+model = SimpleNEt2().to(device)
 
 def init_weights(m):
     if type(m) == nn.Linear:
@@ -61,8 +61,8 @@ for i in range(20000):
     for x, y in train_batch:
         x, y = x.to(device), y.to(device)
         optimizer.zero_grad()
-        output = model(y)
-        loss = F.mse_loss(output, x)
+        output = model(x)
+        loss = F.mse_loss(output, y)
         loss.backward()
         optimizer.step()
     print('epoch: ', i, 'loss: ', loss.item())
@@ -74,17 +74,15 @@ for i in range(20000):
             arr = []
             for x, y in test_batch:
                 x, y = x.to(device), y.to(device)
-                output = model(y)
-                loss = F.mse_loss(output, x)  
+                output = model(x)
+                loss = F.mse_loss(output, y) 
                 arr.append(loss.item())  
             loss_eval.append(np.mean(arr))
         print('test_loss ', loss.item(), 'eval_loss ', np.mean(arr))
-        torch.save(model.state_dict(), './models/ResnetLastG.pth')
+        torch.save(model.state_dict(), './models/ResnetLastF.pth')
     if i % 2000 == 0:
         lr_scheduler.step()
-
-# Plotting and evaluation
-plt.plot(loss_train, label='train')
-plt.plot(loss_eval, label='eval')
-plt.legend()
-plt.show()
+        plt.plot(loss_train, label='train')
+        plt.plot(loss_eval, label='eval')
+        plt.legend()
+        plt.show()
