@@ -11,7 +11,7 @@ import pandas as pd
 import numpy as np
 import os 
 os.environ['MPLCONFIGDIR'] = os.getcwd() + "/configs/"
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 from ArchSimple import SimpleNEt, SimpleNEt2,Model,Model2
 
 # Check if GPU is available
