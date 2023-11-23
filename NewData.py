@@ -9,6 +9,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 import pandas as pd
 import numpy as np
+import os 
+os.environ['MPLCONFIGDIR'] = os.getcwd() + "/configs/"
 # import matplotlib.pyplot as plt
 from ArchSimple import SimpleNEt, SimpleNEt2,Model,Model2
 
