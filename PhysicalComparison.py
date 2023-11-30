@@ -65,7 +65,7 @@ lr_scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=1000, gamma=0.9)
 optimizer2 = optim.Adam(model.parameters(), lr=0.001)
 lr_scheduler2 = optim.lr_scheduler.StepLR(optimizer2, step_size=1000, gamma=0.9)
 
-for epoch in range(10):
+for epoch in range(15000):
     model.train()
     for x, y in train_dataloader:
         x, y = x.to(device), y.to(device)
@@ -105,7 +105,6 @@ for epoch in range(10):
         loss = F.mse_loss(output, y) + F.mse_loss(torch.tensor(S_real_r, dtype=torch.float32), S_r) + F.mse_loss(torch.tensor(S_real_i, dtype=torch.float32), S_i)
         loss.backward()
         optimizer2.step()
-        
     lr_scheduler.step()
     lr_scheduler2.step()
     
@@ -129,6 +128,7 @@ for epoch in range(10):
                 
             loss_test.append(np.mean(arr))
             loss_test2.append(np.mean(arr2))
+    print('epoch: ', epoch, 'loss: ', loss.item(), 'loss2: ', loss.item())
     
     
 plt.figure()
