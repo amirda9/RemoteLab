@@ -123,12 +123,12 @@ for epoch in range(15000):
                 arr.append(loss.item())  
                 
                 output = model2(x)
-                loss = F.mse_loss(output, y)
-                arr2.append(loss.item())
+                loss2 = F.mse_loss(output, y)
+                arr2.append(loss2.item())
                 
             loss_test.append(np.mean(arr))
             loss_test2.append(np.mean(arr2))
-    print('epoch: ', epoch, 'loss: ', np.mean(arr), 'loss2: ', np.mean(arr2))
+        print('epoch: ', epoch, 'loss: ', np.mean(arr), 'loss2: ', np.mean(arr2))
     
     
 plt.figure()
