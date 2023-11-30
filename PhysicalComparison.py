@@ -81,15 +81,15 @@ for epoch in range(15000):
         
         vm = x[:,0:118] 
         va = x[:,118:236]
-        v_r = torch.mul(vm,torch.cos(va*torch.tensor(np.pi/180,dtype=torch.float32)))
-        v_i = torch.mul(vm,torch.sin(va*torch.tensor(np.pi/180,dtype=torch.float32)))
-        V = torch.complex(v_r,v_i)
+        v_r = torch.mul(vm,torch.cos(va*torch.tensor(np.pi/180,dtype=torch.float32))).to(device)
+        v_i = torch.mul(vm,torch.sin(va*torch.tensor(np.pi/180,dtype=torch.float32))).to(device)
+        V = torch.complex(v_r,v_i).to(device)
     
         S = torch.zeros((x.shape[0], 118), dtype=torch.complex64).to(device)
         I = torch.zeros((x.shape[0], 118), dtype=torch.complex64).to(device)
         for sample in range(x.shape[0]):
-            I[sample] = torch.matmul(torch.tensor(Y_bus, dtype=torch.complex64), V[sample])
-            S[sample] = torch.mul(V[sample], torch.conj(torch.tensor(I[sample])))
+            I[sample] = torch.matmul(torch.tensor(Y_bus, dtype=torch.complex64).to(device), V[sample]
+            S[sample] = torch.mul(V[sample], torch.conj(torch.tensor(I[sample])).to(device))
         S_real_r = torch.real(S)*100
         S_real_i = torch.imag(S)*100
         
