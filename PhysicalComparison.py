@@ -37,8 +37,8 @@ train_data = TensorDataset(states_train, meas_train)
 test_data = TensorDataset(states_test, meas_test)
 
 # Create train dataloader
-train_dataloader = DataLoader(train_data, batch_size=512, shuffle=True)
-test_dataloader = DataLoader(test_data, batch_size=256, shuffle=True)
+train_dataloader = DataLoader(train_data, batch_size=256, shuffle=True)
+test_dataloader = DataLoader(test_data, batch_size=128, shuffle=True)
 
 
 #get the y matrix
@@ -64,6 +64,7 @@ lr_scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=1000, gamma=0.9)
 
 optimizer2 = optim.Adam(model2.parameters(), lr=0.01)
 lr_scheduler2 = optim.lr_scheduler.StepLR(optimizer2, step_size=1000, gamma=0.9)
+
 loss_test = []
 loss_test2 = []
 for epoch in range(15000):
@@ -134,7 +135,7 @@ for epoch in range(15000):
         plt.figure()
         plt.plot(loss_test)
         plt.plot(loss_test2)
-        plt.legend(['model1','model2'])
+        plt.legend(['without physical loss','with physical loss'])
         plt.xlabel('epoch')
         plt.ylabel('mse loss')
         plt.savefig('loss.png')        
