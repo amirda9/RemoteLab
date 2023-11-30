@@ -88,7 +88,7 @@ for epoch in range(15000):
         S = torch.zeros((x.shape[0], 118), dtype=torch.complex64).to(device)
         I = torch.zeros((x.shape[0], 118), dtype=torch.complex64).to(device)
         for sample in range(x.shape[0]):
-            I[sample] = torch.matmul(torch.tensor(Y_bus, dtype=torch.complex64).to(device), V[sample]
+            I[sample] = torch.matmul(torch.tensor(Y_bus, dtype=torch.complex64).to(device), V[sample])
             S[sample] = torch.mul(V[sample], torch.conj(torch.tensor(I[sample])).to(device))
         S_real_r = torch.real(S)*100
         S_real_i = torch.imag(S)*100
