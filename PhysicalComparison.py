@@ -37,7 +37,7 @@ train_data = TensorDataset(states_train, meas_train)
 test_data = TensorDataset(states_test, meas_test)
 
 # Create train dataloader
-train_dataloader = DataLoader(train_data, batch_size=1024, shuffle=True)
+train_dataloader = DataLoader(train_data, batch_size=512, shuffle=True)
 test_dataloader = DataLoader(test_data, batch_size=256, shuffle=True)
 
 
@@ -110,7 +110,7 @@ for epoch in range(15000):
     
     loss_test = []
     loss_test2 = []
-    if epoch % 5 == 0:
+    if epoch % 10 == 0:
         model.eval()
         model2.eval()
         with torch.no_grad():
