@@ -85,13 +85,13 @@ for epoch in range(15000):
         v_i = torch.mul(vm,torch.sin(va*torch.tensor(np.pi/180,dtype=torch.float32)))
         V = torch.complex(v_r,v_i)
     
-        S = np.zeros((x.shape[0], 118), dtype=np.complex64)
-        I = np.zeros((x.shape[0], 118), dtype=np.complex64)
+        S = torch.zeros((x.shape[0], 118), dtype=torch.complex64)
+        I = torch.zeros((x.shape[0], 118), dtype=torch.complex64)
         for sample in range(x.shape[0]):
             I[sample] = torch.matmul(torch.tensor(Y_bus, dtype=torch.complex64), V[sample])
             S[sample] = torch.mul(V[sample], torch.conj(torch.tensor(I[sample])))
-        S_real_r = np.real(S)*100
-        S_real_i = np.imag(S)*100
+        S_real_r = torch.real(S)*100
+        S_real_i = torch.imag(S)*100
         
         
         S_r = -output[:,0:118]
