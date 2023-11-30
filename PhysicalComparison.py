@@ -59,10 +59,10 @@ loss_criteria = nn.MSELoss()
 model = Model(236,512,344).to(device)
 model2 = Model2(236,512,344).to(device)
 
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+optimizer = optim.Adam(model.parameters(), lr=0.01)
 lr_scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=1000, gamma=0.9)
 
-optimizer2 = optim.Adam(model.parameters(), lr=0.001)
+optimizer2 = optim.Adam(model.parameters(), lr=0.01)
 lr_scheduler2 = optim.lr_scheduler.StepLR(optimizer2, step_size=1000, gamma=0.9)
 
 for epoch in range(15000):
@@ -89,7 +89,7 @@ for epoch in range(15000):
         I = torch.zeros((x.shape[0], 118), dtype=torch.complex64).to(device)
         for sample in range(x.shape[0]):
             I[sample] = torch.matmul(torch.tensor(Y_bus, dtype=torch.complex64).to(device), V[sample])
-            S[sample] = torch.mul(V[sample], torch.conj(torch.tensor(I[sample])).to(device))
+            S[sample] = torch.mul(V[sample], torch.conj(I[sample]))
         S_real_r = torch.real(S)*100
         S_real_i = torch.imag(S)*100
         
@@ -128,7 +128,7 @@ for epoch in range(15000):
                 
             loss_test.append(np.mean(arr))
             loss_test2.append(np.mean(arr2))
-    print('epoch: ', epoch, 'loss: ', loss.item(), 'loss2: ', loss.item())
+    print('epoch: ', epoch, 'loss: ', np.mean(arr), 'loss2: ', np.mean(arr2))
     
     
 plt.figure()
