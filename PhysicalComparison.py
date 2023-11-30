@@ -62,7 +62,7 @@ model2 = Model2(236,512,344).to(device)
 optimizer = optim.Adam(model.parameters(), lr=0.01)
 lr_scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=1000, gamma=0.9)
 
-optimizer2 = optim.Adam(model.parameters(), lr=0.01)
+optimizer2 = optim.Adam(model2.parameters(), lr=0.01)
 lr_scheduler2 = optim.lr_scheduler.StepLR(optimizer2, step_size=1000, gamma=0.9)
 
 for epoch in range(15000):
