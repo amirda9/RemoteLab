@@ -131,13 +131,13 @@ for epoch in range(15000):
         print('epoch: ', epoch, 'loss: ', np.mean(arr), 'loss2: ', np.mean(arr2))
     
     
-plt.figure()
-plt.plot(loss_test)
-plt.plot(loss_test2)
-plt.legend(['model1','model2'])
-plt.xlabel('epoch')
-plt.ylabel('mse loss')
-plt.show()
+        plt.figure()
+        plt.plot(loss_test)
+        plt.plot(loss_test2)
+        plt.legend(['model1','model2'])
+        plt.xlabel('epoch')
+        plt.ylabel('mse loss')
+        plt.savefig('loss.png')        
 
         
 
