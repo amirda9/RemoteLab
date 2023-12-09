@@ -40,15 +40,17 @@ def init_weights(m):
 # activation_functions = [nn.ReLU, nn.Sigmoid, nn.Tanh]
 # loss_functions = [F.mse_loss, F.l1_loss]
 # learning_rates = [0.01, 0.001]
-# epochs = [10000]
+# epochs = [5000]
 # lr_schedulers = [('StepLR', {'step_size': 1000, 'gamma': 0.9}), ('ExponentialLR', {'gamma': 0.95})]
 
-hidden_layers_cofnigurations = [[1024]]
+# best network 
+hidden_layers_cofnigurations = [[2048, 1024]]
 activation_functions = [nn.ReLU]
-loss_functions = [F.mse_loss]   
+loss_functions = [F.mse_loss]
 learning_rates = [0.001]
-epochs = [10000]
+epochs = [5000]
 lr_schedulers = [('StepLR', {'step_size': 1000, 'gamma': 0.9})]
+
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -82,7 +84,7 @@ for hidden_layers, activation, loss_fn, lr, epoch, (scheduler_name, scheduler_pa
     if i >0:
         print(hidden_layers, activation, loss_fn, lr, epoch, (scheduler_name, scheduler_params))
         # Initialize model
-        model = DynamicNet(236, hidden_layers, 344, activation).to(device)
+        model = DynamicNet(344, hidden_layers, 236, activation).to(device)
         model.apply(init_weights)
         optimizer = optim.Adam(model.parameters(), lr=lr)
 
@@ -96,7 +98,7 @@ for hidden_layers, activation, loss_fn, lr, epoch, (scheduler_name, scheduler_pa
         # Training loop
         for ep in range(epoch):
             model.train()
-            for x, y in train_batch:
+            for y,x in train_batch:
                 optimizer.zero_grad()
                 output = model(x)
                 loss = loss_fn(output, y)
@@ -108,17 +110,16 @@ for hidden_layers, activation, loss_fn, lr, epoch, (scheduler_name, scheduler_pa
                 model.eval()
                 with torch.no_grad():
                     total_test_loss = 0
-                    for x, y in test_batch:
+                    for y,x in test_batch:
                         output = model(x)
                         test_loss = F.mse_loss(output, y).item()
                         total_test_loss += test_loss
                     avg_test_loss = total_test_loss / len(test_batch)
                     print(f'Epoch {ep}: Train Loss: {loss.item()}, Test Loss: {avg_test_loss}')
 
-
         # save model
-        torch.save(model.state_dict(), './models/model_{}.pth'.format(i))
-
+        torch.save(model.state_dict(), './models/model_reverse{}.pth'.format(i))
+        
         # # Save results
         # results.append({
         #     'hidden_layers': hidden_layers,
@@ -133,6 +134,8 @@ for hidden_layers, activation, loss_fn, lr, epoch, (scheduler_name, scheduler_pa
 
         # # Convert results to DataFrame and save to CSV
         # results_df = pd.DataFrame(results)
-        # results_df.to_csv('grid_search_results{}.csv'.format(i), index=False)
+        # results_df.to_csv('grid_search_results_reverse{}.csv'.format(i), index=False)
+
         
+
     
