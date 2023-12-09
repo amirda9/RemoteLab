@@ -38,11 +38,12 @@ y_test = torch.tensor(y_test).float().to(device)
 train_data = TensorDataset(x_train, y_train)
 test_data = TensorDataset(x_test, y_test)
 
-train_batch = DataLoader(train_data, batch_size=1024, shuffle=True)
+train_batch = DataLoader(train_data, batch_size=512, shuffle=True)
 test_batch = DataLoader(test_data, batch_size=128, shuffle=True)
 
 # Model, weights initialization, optimizer, and scheduler
-model = SimpleNEt2().to(device)
+# model = SimpleNEt2().to(device)
+model = Model(236,1024,344).to(device)
 
 def init_weights(m):
     if type(m) == nn.Linear:
@@ -57,9 +58,8 @@ lr_scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=1000, gamma=0.9)
 # Training loop
 loss_train = []
 loss_eval = []
-loss_eval2 = []
 
-for i in range(18000):
+for i in range(10000):
     model.train()
     for x, y in train_batch:
         x, y = x.to(device), y.to(device)
@@ -71,7 +71,7 @@ for i in range(18000):
     lr_scheduler.step()
     print('epoch: ', i, 'loss: ', loss.item())
     
-    if i % 5 == 0:
+    if i % 10 == 0:
         model.eval()
         loss_train.append(loss.item())
         with torch.no_grad():
@@ -85,4 +85,3 @@ for i in range(18000):
                 arr2.append(F.l1_loss(output, y).item())
             loss_eval.append(np.mean(arr))
         print('test_loss ', loss.item(), 'eval_loss ', np.mean(arr), 'mae', np.mean(arr2))
-        torch.save(model.state_dict(), './models/ResnetLastF.pth')
